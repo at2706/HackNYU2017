@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.db import transaction
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
@@ -14,7 +14,14 @@ from . import models
 class IndexView(View):
     def get(self, request):
         recent = models.LabReport.objects.all().order_by("-date")[:5]
-        return render(request, 'index.html', {'recent' : recent})
+        return render(request, 'index.html', {'recent': recent})
+
+    def post(self, request):
+        if request.is_ajax():
+            lat = request.POST.get("lat")
+            lng = request.POST.get("lng")
+            print(",".join([lat, lng]))
+        return HttpResponse()
 
 
 class RegisterView(View):
