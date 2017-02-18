@@ -26,8 +26,7 @@ class Patient(models.Model):
 
 class Doctor(models.Model):
     user = models.OneToOneField(User, related_name='doctor', on_delete=models.CASCADE)
-    name = models.CharField(verbose_name='Name', max_length=50)
-    department = models.CharField(verbose_name='Department', max_length=50)
+    specialty = models.CharField(verbose_name='Department', max_length=50)
 
 
 class Address(models.Model):

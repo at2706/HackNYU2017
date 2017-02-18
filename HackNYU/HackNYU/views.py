@@ -19,16 +19,26 @@ class RegisterView(View):
     def get(self, request):
         return render(request, 'register.html',
                       {'register': forms.RegistrationForm,
-                       'patient': forms.PatientForm})
+                       'patient': forms.PatientForm,
+                       'doctor': forms.DoctorForm})
 
     def post(self, request):
-        with transaction.atomic():
-            userForm = forms.RegistrationForm(request.POST)
-            patientForm = forms.PatientForm(request.POST)
+        userForm = forms.RegistrationForm(request.POST)
+        patientForm = forms.PatientForm(request.POST)
+        doctorForm = forms.DoctorForm(request.POST)
 
-            if userForm.is_valid() and patientForm.is_valid():
+        with transaction.atomic():
+            if userForm.is_valid():
                 user = userForm.save()
-                patientForm.save(user=user)
-                messages.success(request, 'User successfully registered.')
+                if patientForm.is_valid():
+                    patientForm.save(user=user)
+                    messages.success(request, 'Patient successfully registered.')
+                elif doctorForm.is_valid():
+                    doctorForm.save(user=user)
+
                 return HttpResponseRedirect("/")
-        return HttpResponseRedirect(reverse('hacknyu:register'))
+
+        return render(request, 'register.html',
+                      {'register': userForm,
+                       'patient': patientForm,
+                       'doctor': doctorForm})

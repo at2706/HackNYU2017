@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Patient
+from .models import User, Doctor, Patient
 
 
 class RegistrationForm(forms.ModelForm):
@@ -62,3 +62,17 @@ class PatientForm(forms.ModelForm):
         if commit:
             patient.save()
         return patient
+
+
+class DoctorForm(forms.ModelForm):
+
+    class Meta:
+        model = Doctor
+        fields = ('specialty', )
+
+    def save(self, user, commit=True):
+        doctor = super(DoctorForm, self).save(commit=False)
+        doctor.user = user
+        if commit:
+            doctor.save()
+        return doctor

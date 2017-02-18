@@ -8,6 +8,7 @@
         {% csrf_token %}
         {% bootstrap_form register %}
         {% bootstrap_form patient %}
+        {% bootstrap_form doctor %}
         {% block button %}
             {% buttons submit='Submit' reset="Clear" %}{% endbuttons %}
         {% endblock %}
