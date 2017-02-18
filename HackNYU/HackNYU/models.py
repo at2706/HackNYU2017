@@ -5,7 +5,9 @@ from django.db import models
 
 import csv
 import os
+import googlemaps
 dir_path = os.path.dirname(os.path.realpath(__file__))
+gmaps = googlemaps.Client(key='AIzaSyBUQDEXEr05CMdiF8mr3J9RJ7rvipm1pwc')
 # Create your models here.
 
 
@@ -38,6 +40,9 @@ class Address(models.Model):
     class Meta:
         abstract = True
 
+    def geolocate(self):
+        return gmaps.geocode(" ".join([self.address1, self.address2, self.city, self.state, str(self.zipcode)]))
+
 
 class UserAddress(Address):
     user = models.OneToOneField(User, related_name='address', on_delete=models.CASCADE)
@@ -50,6 +55,7 @@ class Hospital(models.Model):
     name = models.CharField(verbose_name='Name', max_length=50)
     phone_number = models.IntegerField()
     insurance = models.OneToOneField(Insurance, related_name='hospital', null=True, on_delete=models.SET_NULL)
+
     def __str__(self):
         return self.name
 
@@ -67,16 +73,16 @@ class Doctor(models.Model):
     hospital = models.ForeignKey(Hospital, related_name='doctor', on_delete=models.CASCADE)
 
 
-
 class MedicalRecord(models.Model):
     patient = models.ForeignKey(Patient, related_name='records', null=True, on_delete=models.SET_NULL)
     doctor = models.ForeignKey(Doctor, related_name='records', null=True, on_delete=models.SET_NULL)
     date = models.DateField(auto_now_add=True)
     test_type = models.CharField(verbose_name='Test Type', max_length=50)
 
+
 class LabReport(models.Model):
     user = models.OneToOneField(User, related_name='lab', on_delete=models.CASCADE)
-    patient = models.ForeignKey(Patient, related_name='lab', null=True, on_delete=models.SET_NULL)  
+    patient = models.ForeignKey(Patient, related_name='lab', null=True, on_delete=models.SET_NULL)
     date = models.DateField(auto_now_add=True)
     illness = models.CharField(verbose_name='Illness', max_length=30)
     treatment = models.CharField(verbose_name='Treatment', max_length=30)
@@ -84,16 +90,19 @@ class LabReport(models.Model):
     amount = models.IntegerField()
     category = models.CharField(verbose_name='Category', max_length=30)
 
+
 class inpatient(models.Model):
     patient = models.ForeignKey(Patient, related_name='inpatient', null=True, on_delete=models.SET_NULL)
     lab = models.ForeignKey(LabReport, related_name='inpatient', null=True, on_delete=models.SET_NULL)
     date_of_admission = models.DateField(auto_now_add=True)
     date_of_discharge = models.DateField(auto_now_add=True)
 
+
 class outpatient(models.Model):
-    patient = models.ForeignKey(Patient, related_name='outpatient', null=True, on_delete=models.SET_NULL)  
+    patient = models.ForeignKey(Patient, related_name='outpatient', null=True, on_delete=models.SET_NULL)
     lab = models.ForeignKey(LabReport, related_name='outpatient', null=True, on_delete=models.SET_NULL)
     date = models.DateField(auto_now_add=True)
+
 
 class Room(models.Model):
     status = models.BooleanField(default=False)
