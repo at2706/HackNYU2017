@@ -12,21 +12,20 @@
 <div class="row">
 	Here are your five most recent lab reports:
 	{% for labreport in recent %}
-		<table class="table">
+		<table class="table table-hover">
 			<tr>
-				<td>Full Name: {{ labreport.user.first_name }}  {{ labreport.user.last_name }}</td>
-				<td>Age: {{ request.user.patient.age }}</td>
-				<td>Date: {{ labreport.date }}</td>
+				<td><b>Full Name:</b> {{ labreport.user.first_name }}  {{ labreport.user.last_name }}</td>
+				<td><b>Age:</b> {{ request.user.patient.age }}</td>
+				<td><b>Date:</b> {{ labreport.date }}</td>
 			</tr>
 			<tr>
-				<td>Illness: {{ labreport.illness }}</td>
-				<td></td>
-				<td></td>
+				<td colspan="3"><b>Illness:</b> {{ labreport.illness }}</td>
 			</tr>
 			<tr>
-				<td>Treatment: {{ labreport.treatment }}</td>
-				<td></td>
-				<td></td>
+				<td colspan="3"><b>Treatment:</b> {{ labreport.treatment }}</td>
+			</tr>
+			<tr>
+				<td colspan="3" style="text-align: center">Click here for more details!</td>
 			</tr>
 		</table>
 	{% endfor %}
