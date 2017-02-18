@@ -7,6 +7,7 @@
     <form method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form register %}
+        {% bootstrap_form patient %}
         {% block button %}
             {% buttons submit='Submit' reset="Clear" %}{% endbuttons %}
         {% endblock %}

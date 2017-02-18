@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, Patient
 
 
 class RegistrationForm(forms.ModelForm):
@@ -47,3 +47,18 @@ class RegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class PatientForm(forms.ModelForm):
+    date_of_birth = forms.DateField(widget=forms.SelectDateWidget(years=range(1970, 2010)))
+
+    class Meta:
+        model = Patient
+        fields = ('date_of_birth', 'gender', )
+
+    def save(self, user, commit=True):
+        patient = super(PatientForm, self).save(commit=False)
+        patient.user = user
+        if commit:
+            patient.save()
+        return patient
