@@ -26,7 +26,7 @@ class IndexView(View):
 
             for hospitalAdd in models.HospitalAddress.objects.all():
                 dest = hospitalAdd.geolocate()[0]['geometry']['location']
-                print(gmaps.distance_matrix(origins=(lat, lng), destinations=dest))
+                #print(gmaps.distance_matrix(origins=(lat, lng), destinations=dest))
         return HttpResponse()
 
 

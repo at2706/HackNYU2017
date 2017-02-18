@@ -68,21 +68,24 @@ class Hospital(models.Model):
     def __str__(self):
         return self.name
 
+    def formatted_number(self):
+        return "("+str(self.phone_number)[0:3]+") - "+str(self.phone_number)[3:6]+" - "+str(self.phone_number)[6:10]
 
 class HospitalAddress(Address):
-    hospital = models.ForeignKey(Hospital, related_name='addresses', on_delete=models.CASCADE)
+    hospital = models.OneToOneField(Hospital, related_name='address', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = 'hospital addresses'
 
 
 class Doctor(models.Model):
-    user = models.OneToOneField(User, related_name='doctor', on_delete=models.CASCADE)
+    #user = models.OneToOneField(User, related_name='doctor', on_delete=models.CASCADE)
+    full_name = models.CharField(verbose_name='Name', max_length=50, default='John Doe')
     specialty = models.CharField(verbose_name='Department', max_length=50)
     hospital = models.ForeignKey(Hospital, related_name='doctor', on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.user)
+        return self.full_name
 
 
 class MedicalRecord(models.Model):
@@ -96,14 +99,14 @@ class MedicalRecord(models.Model):
 
 
 class LabReport(models.Model):
-    user = models.OneToOneField(User, related_name='lab', on_delete=models.CASCADE)
-    patient = models.ForeignKey(Patient, related_name='lab', null=True, on_delete=models.SET_NULL)
+    patient = models.ForeignKey(Patient, related_name='lab', null=True, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     illness = models.CharField(verbose_name='Illness', max_length=500)
     treatment = models.CharField(verbose_name='Treatment', max_length=500)
     weight = models.IntegerField()
     amount = models.IntegerField()
     category = models.CharField(verbose_name='Category', max_length=30)
+    doctor = models.ForeignKey(Doctor, related_name='lab', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return str(self.patient.user) + " " + str(self.date)

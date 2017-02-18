@@ -2,5 +2,37 @@
 {% load bootstrap3 %}
 {% block title %}Detailed Report{% endblock %}
 {% block content %}
-    {{ object.user.first_name }}
+    <div class="detailed">
+    	<table class="table table-hover" style="border:2px solid black;">
+    		<tr>
+    			<td><b>Full Name: </b>{{ object.patient.user.first_name }} {{ object.patient.user.last_name }}</td>
+    			<td><b>Date: </b>{{ object.date }}</td>
+    		</tr>
+    		<tr>
+    			<td><b>Age: </b>{{ object.patient.age }}</td>
+    			<td><b>Weight: </b>{{ object.weight }}</td>
+    		</tr>
+    		<tr>
+    			<tr>
+    				<td colspan='2'><b>Doctor: </b>Dr. {{ object.doctor.full_name }}</td>
+    			</tr>
+    		</tr>
+    		<tr>
+    			<td colspan='2'><b>Illness: </b>{{ object.illness }}</td>
+    		</tr>
+    		<tr>
+    			<td colspan='2'><b>Treatment: </b>{{ object.treatment }}</td>
+    		</tr>
+    		<tr>
+    			<td colspan='2'><b>Hospital: </b>{{ object.doctor.hospital.name }}</td>
+    		</tr>
+    		<tr>
+    			<td colspan='2'><b>Hospital Address: </b>{{ object.doctor.hospital.address }}</td>
+    		</tr>
+    		<tr>
+    			<td><b>Phone Number: </b>{{ object.doctor.hospital.formatted_number }}</td>
+    			<td><b>Cost: </b>${{object.amount}}</td>
+    		</tr>
+    	</table>
+    </div>
 {% endblock %}
