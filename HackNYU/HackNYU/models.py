@@ -24,11 +24,6 @@ class Patient(models.Model):
     phone_number = models.IntegerField()
 
 
-class Doctor(models.Model):
-    user = models.OneToOneField(User, related_name='doctor', on_delete=models.CASCADE)
-    specialty = models.CharField(verbose_name='Department', max_length=50)
-
-
 class Address(models.Model):
     address1 = models.CharField(verbose_name='Address Line 1', max_length=30)
     address2 = models.CharField(verbose_name='Address Line 2', max_length=30, blank=True)
@@ -55,6 +50,8 @@ class Hospital(models.Model):
     name = models.CharField(verbose_name='Name', max_length=50)
     phone_number = models.IntegerField()
     insurance = models.OneToOneField(Insurance, related_name='hospital', null=True, on_delete=models.SET_NULL)
+    def __str__(self):
+        return self.name
 
 
 class HospitalAddress(Address):
@@ -62,6 +59,13 @@ class HospitalAddress(Address):
 
     class Meta:
         verbose_name_plural = 'hospital addresses'
+
+
+class Doctor(models.Model):
+    user = models.OneToOneField(User, related_name='doctor', on_delete=models.CASCADE)
+    specialty = models.CharField(verbose_name='Department', max_length=50)
+    hospital = models.ForeignKey(Hospital, related_name='doctor', on_delete=models.CASCADE)
+
 
 
 class MedicalRecord(models.Model):

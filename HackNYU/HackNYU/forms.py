@@ -50,11 +50,12 @@ class RegistrationForm(forms.ModelForm):
 
 
 class PatientForm(forms.ModelForm):
-    date_of_birth = forms.DateField(widget=forms.SelectDateWidget(years=range(1970, 2010)))
+    date_of_birth = forms.DateField(widget=forms.SelectDateWidget(years=range(1900, 2017)))
 
     class Meta:
         model = Patient
-        fields = ('date_of_birth', 'gender', )
+        fields = ('date_of_birth', 'gender', 'weight', 'age', 'phone_number')
+        help_texts = {'phone_number' : "10 digit number, no dashes or parenthesis"}
 
     def save(self, user, commit=True):
         patient = super(PatientForm, self).save(commit=False)
@@ -62,17 +63,3 @@ class PatientForm(forms.ModelForm):
         if commit:
             patient.save()
         return patient
-
-
-class DoctorForm(forms.ModelForm):
-
-    class Meta:
-        model = Doctor
-        fields = ('specialty', )
-
-    def save(self, user, commit=True):
-        doctor = super(DoctorForm, self).save(commit=False)
-        doctor.user = user
-        if commit:
-            doctor.save()
-        return doctor

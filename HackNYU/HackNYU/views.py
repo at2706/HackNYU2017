@@ -12,6 +12,7 @@ from . import forms
 
 class IndexView(View):
     def get(self, request):
+      
         return render(request, 'index.html')
 
 
@@ -19,13 +20,11 @@ class RegisterView(View):
     def get(self, request):
         return render(request, 'register.html',
                       {'register': forms.RegistrationForm,
-                       'patient': forms.PatientForm,
-                       'doctor': forms.DoctorForm})
+                       'patient': forms.PatientForm})
 
     def post(self, request):
         userForm = forms.RegistrationForm(request.POST)
         patientForm = forms.PatientForm(request.POST)
-        doctorForm = forms.DoctorForm(request.POST)
 
         with transaction.atomic():
             if userForm.is_valid():
@@ -33,12 +32,8 @@ class RegisterView(View):
                 if patientForm.is_valid():
                     patientForm.save(user=user)
                     messages.success(request, 'Patient successfully registered.')
-                elif doctorForm.is_valid():
-                    doctorForm.save(user=user)
-                    messages.success(request, 'Doctor successfully registered.')
                 return HttpResponseRedirect("/")
 
         return render(request, 'register.html',
                       {'register': userForm,
-                       'patient': patientForm,
-                       'doctor': doctorForm})
+                       'patient': patientForm})

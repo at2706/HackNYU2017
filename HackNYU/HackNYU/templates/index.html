@@ -6,8 +6,8 @@
 <a class="btn btn-primary" href="{% url 'hacknyu:login' %}">Login</a>
 {% else %}
 <a class="btn btn-primary" href="{% url 'hacknyu:logout' %}">Logout</a>
-<div class="test">
-	asdkfjalskdj
+<div class="row">
+	Hello {{ request.user.first_name }}  {{ request.user.last_name }}!
 </div>
 {% endif %}
 {% endblock %}
