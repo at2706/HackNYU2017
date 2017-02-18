@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+{% load bootstrap3 %}
+{% load static %}
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#70b8ff">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% bootstrap_css_url %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <title>HackNYU {% block title %}{% endblock %}</title>
+
+</head>
+<body>
+    <div id="wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    {% bootstrap_messages %}
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% bootstrap_jquery_url %}"></script>
+    <script src="{% bootstrap_javascript_url %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+</body>
+</html>
