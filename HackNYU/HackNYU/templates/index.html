@@ -14,15 +14,19 @@
 	{% for labreport in recent %}
 		<table class="table">
 			<tr>
-				<td>{{ labreport.user.first_name }}  {{ labreport.user.last_name }}</td>
-				<td>{{ labreport.age }}</td>
-				<td>{{ labreport.date }}</td>
+				<td>Full Name: {{ labreport.user.first_name }}  {{ labreport.user.last_name }}</td>
+				<td>Age: {{ request.user.patient.age }}</td>
+				<td>Date: {{ labreport.date }}</td>
 			</tr>
 			<tr>
-				<td>{{ labreport.illness }}</td>
+				<td>Illness: {{ labreport.illness }}</td>
+				<td></td>
+				<td></td>
 			</tr>
 			<tr>
-				<td>{{ labreport.treatment }}</td>
+				<td>Treatment: {{ labreport.treatment }}</td>
+				<td></td>
+				<td></td>
 			</tr>
 		</table>
 	{% endfor %}

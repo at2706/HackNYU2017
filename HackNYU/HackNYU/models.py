@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 
+import datetime
 import csv
 import os
 import googlemaps
@@ -13,6 +14,8 @@ gmaps = googlemaps.Client(key='AIzaSyBUQDEXEr05CMdiF8mr3J9RJ7rvipm1pwc')
 
 class Insurance(models.Model):
     name = models.CharField(verbose_name='Name', max_length=50)
+    def __str__(self):
+        return self.name
 
 
 class Patient(models.Model):
@@ -24,6 +27,9 @@ class Patient(models.Model):
     age = models.IntegerField()
     insurance = models.OneToOneField(Insurance, related_name='patient', null=True, on_delete=models.SET_NULL)
     phone_number = models.IntegerField()
+    def __str__(self):
+        return str(self.user)
+
 
 
 class Address(models.Model):
@@ -40,8 +46,11 @@ class Address(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return " ".join([self.address1, self.address2, self.city, self.state, str(self.zipcode)])
+
     def geolocate(self):
-        return gmaps.geocode(" ".join([self.address1, self.address2, self.city, self.state, str(self.zipcode)]))
+        return gmaps.geocode(self)
 
 
 class UserAddress(Address):
@@ -71,24 +80,28 @@ class Doctor(models.Model):
     user = models.OneToOneField(User, related_name='doctor', on_delete=models.CASCADE)
     specialty = models.CharField(verbose_name='Department', max_length=50)
     hospital = models.ForeignKey(Hospital, related_name='doctor', on_delete=models.CASCADE)
-
+    def __str__(self):
+        return str(self.user)
 
 class MedicalRecord(models.Model):
     patient = models.ForeignKey(Patient, related_name='records', null=True, on_delete=models.SET_NULL)
     doctor = models.ForeignKey(Doctor, related_name='records', null=True, on_delete=models.SET_NULL)
     date = models.DateField(auto_now_add=True)
     test_type = models.CharField(verbose_name='Test Type', max_length=50)
-
+    def __str__(self):
+        return str(self.patient.user)+" "+str(self.date)
 
 class LabReport(models.Model):
     user = models.OneToOneField(User, related_name='lab', on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, related_name='lab', null=True, on_delete=models.SET_NULL)
     date = models.DateField(auto_now_add=True)
-    illness = models.CharField(verbose_name='Illness', max_length=30)
-    treatment = models.CharField(verbose_name='Treatment', max_length=30)
+    illness = models.CharField(verbose_name='Illness', max_length=500)
+    treatment = models.CharField(verbose_name='Treatment', max_length=500)
     weight = models.IntegerField()
     amount = models.IntegerField()
     category = models.CharField(verbose_name='Category', max_length=30)
+    def __str__(self):
+        return str(self.patient.user)+" "+str(self.date)
 
 
 class inpatient(models.Model):
