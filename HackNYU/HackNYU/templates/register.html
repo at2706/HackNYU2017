@@ -7,10 +7,24 @@
     <form method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form register %}
-        {% bootstrap_form patient %}
-        {% bootstrap_form doctor %}
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#patient" aria-controls="patient" role="tab" data-toggle="tab">Patient</a></li>
+            <li role="presentation"><a href="#doctor" aria-controls="doctor" role="tab" data-toggle="tab">Doctor</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="patient">
+                {% bootstrap_form patient %}
+            </div>
+            <div role="tabpanel" class="tab-pane" id="doctor">
+                {% bootstrap_form doctor %}
+            </div>
+        </div>
         {% block button %}
             {% buttons submit='Submit' reset="Clear" %}{% endbuttons %}
         {% endblock %}
     </form>
+
+    
 {% endblock %}

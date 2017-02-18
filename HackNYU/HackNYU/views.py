@@ -35,7 +35,7 @@ class RegisterView(View):
                     messages.success(request, 'Patient successfully registered.')
                 elif doctorForm.is_valid():
                     doctorForm.save(user=user)
-
+                    messages.success(request, 'Doctor successfully registered.')
                 return HttpResponseRedirect("/")
 
         return render(request, 'register.html',
