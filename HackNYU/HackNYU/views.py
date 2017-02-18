@@ -31,7 +31,8 @@ class IndexView(View):
 
 
 class LabReportDetail(DetailView):
-    pass
+    model = models.LabReport
+    template_name = "detail.html"
 
 
 class RegisterView(View):

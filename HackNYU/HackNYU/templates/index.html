@@ -25,7 +25,7 @@
 				<td colspan="3"><b>Treatment:</b> {{ labreport.treatment }}</td>
 			</tr>
 			<tr>
-				<td colspan="3" style="text-align: center">Click here for more details!</td>
+				<td colspan="3" style="text-align: center"><a href="{% url 'hacknyu:detail' labreport.pk %}">Click here for more details!</a></td>
 			</tr>
 		</table>
 	{% endfor %}
