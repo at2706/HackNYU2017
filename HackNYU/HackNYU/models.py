@@ -5,8 +5,12 @@ from django.db import models
 
 import csv
 import os
-
+dir_path = os.path.dirname(os.path.realpath(__file__))
 # Create your models here.
+
+
+class Insurance(models.Model):
+    name = models.CharField(verbose_name='Name', max_length=50)
 
 
 class Patient(models.Model):
@@ -14,6 +18,10 @@ class Patient(models.Model):
     date_of_birth = models.DateField(default=None, blank=True, null=True)
     gender_choices = (('m', 'Male'), ('f', 'Female'), ('o', 'Other'))
     gender = models.CharField(max_length=1, choices=gender_choices, default='m')
+    weight = models.IntegerField()
+    age = models.IntegerField()
+    insurance = models.OneToOneField(Insurance, related_name='patient', null=True, on_delete=models.SET_NULL)
+    phone_number = models.IntegerField()
 
 
 class Doctor(models.Model):
@@ -27,11 +35,11 @@ class Address(models.Model):
     address2 = models.CharField(verbose_name='Address Line 2', max_length=30, blank=True)
     city = models.CharField(verbose_name='City', max_length=10)
 
-    dir_path = os.path.dirname(os.path.realpath(__file__))
     with open(os.path.join(dir_path, 'states.csv')) as f:
         csvfile = csv.reader(f)
         state_choices = [(row[0], row[1]) for row in csvfile]
     state = models.CharField(verbose_name='State', max_length=2, choices=state_choices)
+    zipcode = models.IntegerField()
 
     class Meta:
         abstract = True
@@ -46,6 +54,8 @@ class UserAddress(Address):
 
 class Hospital(models.Model):
     name = models.CharField(verbose_name='Name', max_length=50)
+    phone_number = models.IntegerField()
+    insurance = models.OneToOneField(Insurance, related_name='hospitial', null=True, on_delete=models.SET_NULL)
 
 
 class HospitalAddress(Address):
