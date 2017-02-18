@@ -26,22 +26,33 @@ $(document).ready(function(){
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
     });
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+            };
 
-    $.ajax({
-        url : "/", // the endpoint
-        type : "POST", // http method
-        data : { the_post : $('#post-text').val() }, // data sent with the post request
+            $.ajax({
+                url : "/", // the endpoint
+                type : "POST", // http method
+                data : pos, // data sent with the post request
 
-        // handle a successful response
-        success : function(json) {
-            $('#post-text').val(''); // remove the value from the input
-            console.log(json); // log the returned json to the console
-            console.log("success"); // another sanity check
-        },
+                // handle a successful response
+                success : function(json) {
+                    $('#post-text').val(''); // remove the value from the input
+                    console.log(json); // log the returned json to the console
+                    console.log("success"); // another sanity check
+                },
 
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            
-        }
-    });
+                // handle a non-successful response
+                error : function(xhr,errmsg,err) {
+                    
+                }
+            });
+        });
+    }
+
+
+    
 });

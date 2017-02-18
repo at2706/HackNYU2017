@@ -2,13 +2,15 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse
 from django.views import View
+from django.views.generic.detail import DetailView
+import googlemaps
 
 from . import forms
 from . import models
 
 # Create your views here.
+gmaps = googlemaps.Client(key='AIzaSyBUQDEXEr05CMdiF8mr3J9RJ7rvipm1pwc')
 
 
 class IndexView(View):
@@ -21,7 +23,15 @@ class IndexView(View):
             lat = request.POST.get("lat")
             lng = request.POST.get("lng")
             print(",".join([lat, lng]))
+
+            for hospitalAdd in models.HospitalAddress.objects.all():
+                dest = hospitalAdd.geolocate()[0]['geometry']['location']
+                print(gmaps.distance_matrix(origins=(lat, lng), destinations=dest))
         return HttpResponse()
+
+
+class LabReportDetail(DetailView):
+    pass
 
 
 class RegisterView(View):
