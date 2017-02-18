@@ -6,14 +6,15 @@ from django.urls import reverse
 from django.views import View
 
 from . import forms
+from . import models
 
 # Create your views here.
 
 
 class IndexView(View):
     def get(self, request):
-      
-        return render(request, 'index.html')
+        recent = models.LabReport.objects.all().order_by("-date")[:5]
+        return render(request, 'index.html', {'recent' : recent})
 
 
 class RegisterView(View):

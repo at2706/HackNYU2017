@@ -9,5 +9,24 @@
 <div class="row">
 	Hello {{ request.user.first_name }}  {{ request.user.last_name }}!
 </div>
+<div class="row">
+	Here are your five most recent lab reports:
+	{% for labreport in recent %}
+		<table class="table">
+			<tr>
+				<td>{{ labreport.user.first_name }}  {{ labreport.user.last_name }}</td>
+				<td>{{ labreport.age }}</td>
+				<td>{{ labreport.date }}</td>
+			</tr>
+			<tr>
+				<td>{{ labreport.illness }}</td>
+			</tr>
+			<tr>
+				<td>{{ labreport.treatment }}</td>
+			</tr>
+		</table>
+	{% endfor %}
+</div>
+
 {% endif %}
 {% endblock %}
