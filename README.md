@@ -1,4 +1,4 @@
-# HackNYU
+# HackNYU: Medical Records Instantly
 ------------------------------------------------------------------------------------------------------------------------------------------
 Welcome to our MRI Repo! MRI, short for Medical Records Instantly, aspires to provide a secure online environment for all your health records. MRI allows individuals to have all their medical test results, documents, and even insurance bills, stored in an easy to use database. Each individual is provided with a private login, that only they and their doctors may access. Through this login, hospitals and doctors are able to directly upload private test results, that you may then access anytime from anywhere in the world. Rather than having to wait weeks for records to arrive, MRI provides users automatic access to their medical history.
 
