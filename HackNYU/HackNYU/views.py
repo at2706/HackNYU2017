@@ -4,6 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 from django.views.generic.detail import DetailView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 import googlemaps
 
 from . import forms
@@ -14,8 +16,11 @@ gmaps = googlemaps.Client(key='AIzaSyBUQDEXEr05CMdiF8mr3J9RJ7rvipm1pwc')
 
 
 class IndexView(View):
+
     def get(self, request):
-        recent = models.LabReport.objects.all().order_by("-date")[:5]
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect("/login")
+        recent = models.LabReport.objects.filter(patient=request.user.patient).order_by("-date")[:5]
         return render(request, 'index.html', {'recent': recent})
 
     def post(self, request):
@@ -31,8 +36,11 @@ class IndexView(View):
 
 
 class LabReportDetail(DetailView):
-    model = models.LabReport
-    template_name = "detail.html"
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect("/login")
+        model = models.LabReport
+        template_name = "detail.html"
 
 
 class RegisterView(View):
@@ -56,3 +64,12 @@ class RegisterView(View):
         return render(request, 'register.html',
                       {'register': userForm,
                        'patient': patientForm})
+
+
+class HistoryView(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect("/login")
+        all_reports = models.LabReport.objects.filter(patient=request.user.patient).order_by("-date")
+        return render(request, 'history.html',
+                      {'reports':all_reports})

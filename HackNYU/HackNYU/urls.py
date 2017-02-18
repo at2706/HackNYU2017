@@ -7,9 +7,10 @@ urlpatterns = [
     # Django Default User Authentication
     # https://docs.djangoproject.com/en/1.10/topics/auth/default/
     url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
+    #url(r'^accounts/login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
-
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^register/', views.RegisterView.as_view(), name='register'),
     url(r'^detail/(?P<pk>\d+)/$', views.LabReportDetail.as_view(), name='detail'),
+    url(r'^history/', views.HistoryView.as_view(), name='history'),
 ]

@@ -1,0 +1,6 @@
+div.bordernfill{
+	border-style: solid;
+	border-width:1px;
+	border-radius: 25px;
+	background-color: #f2f4f9;
+}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block title %}Detailed Report{% endblock %}
+{% block content %}
+    <div class="main">
+        <table class="table">
+            <th>Hospital</th>
+            <th>Date</th>
+            <th>Link</th>
+            {% for report in reports %}
+                <tr>
+                    <td>{{ report.doctor.hospital.name }}</td>
+                    <td>{{ report.date }}</td>
+                    <td><a href="{% url 'hacknyu:detail' report.pk %}">Link</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
