@@ -6,8 +6,8 @@
 <a class="btn btn-primary" href="{% url 'hacknyu:login' %}">Login</a>
 {% else %}
 <a class="btn btn-primary" href="{% url 'hacknyu:logout' %}">Logout</a>
-<div class="row">
-	Hello {{ request.user.first_name }}  {{ request.user.last_name }}!
+<div class="page-header">
+	<h3>Hello {{ request.user.first_name }}  {{ request.user.last_name }}!</h3>
 </div>
 <div class="row">
 	Here are your five most recent lab reports:

@@ -2,8 +2,9 @@
 {% load bootstrap3 %}
 {% block title %}Login{% endblock %}
 {% block content %}
-    <h1>Welcome to the Login Page!</h1>
-    <hr/>
+    <div class="page-header">
+        <h3>Welcome to the login page!</h3>
+    </div>
     <form method="post" action="">
         {% csrf_token %}
         {% bootstrap_form form %}
