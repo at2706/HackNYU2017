@@ -5,35 +5,41 @@
 <a class="btn btn-primary" href="{% url 'hacknyu:register' %}">Register</a>
 <a class="btn btn-primary" href="{% url 'hacknyu:login' %}">Login</a>
 {% else %}
-<a class="btn btn-primary" href="{% url 'hacknyu:logout' %}">Logout</a>
 <div class="page-header">
 	<h3>Hello {{ request.user.first_name }}  {{ request.user.last_name }}!</h3>
+	<a class="btn btn-default" href="{% url 'hacknyu:logout' %}">Logout</a>
 </div>
-<div class="row">
-	Here are your five most recent lab reports:
-	{% for labreport in recent %}
-		<div class="container-fluid">
-			<div class="bordernfill">
-				<table class="table">
-					<tr>
-						<td><b>Full Name:</b> {{ labreport.user.first_name }}  {{ labreport.user.last_name }}</td>
-						<td><b>Age:</b> {{ request.user.patient.age }}</td>
-						<td><b>Date:</b> {{ labreport.date }}</td>
-					</tr>
-					<tr>
-						<td colspan="3"><b>Illness:</b> {{ labreport.illness }}</td>
-					</tr>
-					<tr>
-						<td colspan="3"><b>Treatment:</b> {{ labreport.treatment }}</td>
-					</tr>
-					<tr>
-						<td colspan="3" style="text-align: center"><a href="{% url 'hacknyu:detail' labreport.pk %}">Click here for more details!</a></td>
-					</tr>
-				</table>
-			</div>
+<div class="panel-group">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			Here are your five most recent lab reports:
 		</div>
-	{% endfor %}
-	<a class="btn btn-primary" href="{% url 'hacknyu:history' %}">See all</a>
+			{% for labreport in recent %}
+			<div class="panel-body">
+				<div class="">
+					<table class="table table-hover">
+						<tr>
+							<td><b>Full Name:</b> {{ labreport.patient.user.first_name }}  {{ labreport.patient.user.last_name }}</td>
+							<td><b>Age:</b> {{ request.user.patient.age }}</td>
+							<td><b>Date:</b> {{ labreport.date }}</td>
+						</tr>
+						<tr>
+							<td colspan="3"><b>Illness:</b> {{ labreport.illness }}</td>
+						</tr>
+						<tr>
+							<td colspan="3"><b>Treatment:</b> {{ labreport.treatment }}</td>
+						</tr>
+						<tr>
+							<td colspan="3" style="text-align: center" onclick="window.location('{% url 'hacknyu:detail' labreport.pk %}')"><a href="{% url 'hacknyu:detail' labreport.pk %}">Click here for more details!</a></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		{% endfor %}
+		<div class="panel-footer">
+			<a class="btn btn-primary btn-block" href="{% url 'hacknyu:history' %}">See all</a>
+		</div>
+	</div>
 </div>
 
 {% endif %}
