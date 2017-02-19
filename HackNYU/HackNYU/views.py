@@ -1,13 +1,16 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db import transaction
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views import View
 from django.views.generic.detail import DetailView
+
+from geopy.distance import vincenty
+import operator
+
 from . import forms
 from . import models
-
 # Create your views here.
 
 
@@ -25,7 +28,15 @@ class IndexView(LoginRequiredMixin, View):
             print("Hello!")
             lat = request.POST.get('lat')
             lng = request.POST.get('lng')
-            print((lat, lng))
+            pos = (lat, lng)
+
+            nearby = []
+            for hospital in models.HospitalAddress.objects.all():
+                loc = (hospital.lat, hospital.lng)
+                nearby.append((hospital, vincenty(pos, loc).miles))
+
+            nearby.sort(key=operator.itemgetter(1))
+            return JsonResponse(nearby[:10])
 
         return HttpResponse()
 
