@@ -7,7 +7,7 @@ import csv
 import os
 import googlemaps
 dir_path = os.path.dirname(os.path.realpath(__file__))
-gmaps = googlemaps.Client(key='AIzaSyBUQDEXEr05CMdiF8mr3J9RJ7rvipm1pwc')
+gmaps = googlemaps.Client(key='AIzaSyC6J7M6OfmIOpMpKMHcls828Lp3e3FjnUo')
 # Create your models here.
 
 
@@ -50,7 +50,7 @@ class Address(models.Model):
         return " ".join([self.address1, self.address2, self.city, self.state, str(self.zipcode)])
 
     def geolocate(self):
-        return gmaps.geocode(self)
+        return gmaps.geocode(str(self))
 
 
 class UserAddress(Address):
@@ -69,7 +69,8 @@ class Hospital(models.Model):
         return self.name
 
     def formatted_number(self):
-        return "("+str(self.phone_number)[0:3]+") - "+str(self.phone_number)[3:6]+" - "+str(self.phone_number)[6:10]
+        return "(" + str(self.phone_number)[0:3] + ") - " + str(self.phone_number)[3:6] + " - " + str(self.phone_number)[6:10]
+
 
 class HospitalAddress(Address):
     hospital = models.OneToOneField(Hospital, related_name='address', on_delete=models.CASCADE)
@@ -79,7 +80,7 @@ class HospitalAddress(Address):
 
 
 class Doctor(models.Model):
-    #user = models.OneToOneField(User, related_name='doctor', on_delete=models.CASCADE)
+    # user = models.OneToOneField(User, related_name='doctor', on_delete=models.CASCADE)
     full_name = models.CharField(verbose_name='Name', max_length=50, default='John Doe')
     specialty = models.CharField(verbose_name='Department', max_length=50)
     hospital = models.ForeignKey(Hospital, related_name='doctor', on_delete=models.CASCADE)
