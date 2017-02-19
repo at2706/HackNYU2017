@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 import csv
+from datetime import date
 import os
 from geopy.geocoders import Nominatim
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -23,13 +24,15 @@ class Patient(models.Model):
     gender_choices = (('m', 'Male'), ('f', 'Female'), ('o', 'Other'))
     gender = models.CharField(max_length=1, choices=gender_choices, default='m')
     weight = models.IntegerField()
-    age = models.IntegerField()
     insurance = models.OneToOneField(
         Insurance, related_name='patient', null=True, on_delete=models.SET_NULL)
     phone_number = models.IntegerField()
 
     def __str__(self):
         return str(self.user)
+
+    def age(self):
+        return int(date.today() - self.date_of_birth) / 365
 
 
 class Address(models.Model):

@@ -54,18 +54,20 @@ class RegisterView(View):
     def get(self, request):
         return render(request, 'register.html',
                       {'register': forms.RegistrationForm,
-                       'patient': forms.PatientForm})
+                       'patient': forms.PatientForm,
+                       'address': forms.UserAddressForm})
 
     def post(self, request):
         userForm = forms.RegistrationForm(request.POST)
         patientForm = forms.PatientForm(request.POST)
+        addressForm = forms.UserAddressForm(request.POST)
 
         with transaction.atomic():
-            if userForm.is_valid():
+            if userForm.is_valid() and patientForm.is_valid() and addressForm.is_valid():
                 user = userForm.save()
-                if patientForm.is_valid():
-                    patientForm.save(user=user)
-                    messages.success(request, 'Patient successfully registered.')
+                patientForm.save(user=user)
+                addressForm.save(user=user)
+                messages.success(request, 'Patient successfully registered.')
                 return HttpResponseRedirect("/")
 
         return render(request, 'register.html',
@@ -90,7 +92,7 @@ class HelpView(View):
 
 class SecurityView(View):
     def get(self, request):
-        return render(request, 'Security.html')
+        return render(request, 'security.html')
 
 
 class AboutView(View):

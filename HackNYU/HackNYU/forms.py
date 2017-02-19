@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Doctor, Patient
+from .models import User, Patient, UserAddress
 
 
 class RegistrationForm(forms.ModelForm):
@@ -54,8 +54,8 @@ class PatientForm(forms.ModelForm):
 
     class Meta:
         model = Patient
-        fields = ('date_of_birth', 'gender', 'weight', 'age', 'phone_number')
-        help_texts = {'phone_number' : "10 digit number, no dashes or parenthesis"}
+        fields = ('date_of_birth', 'gender', 'weight', 'phone_number')
+        help_texts = {'phone_number': "10 digit number, no dashes or parenthesis"}
 
     def save(self, user, commit=True):
         patient = super(PatientForm, self).save(commit=False)
@@ -63,3 +63,16 @@ class PatientForm(forms.ModelForm):
         if commit:
             patient.save()
         return patient
+
+
+class UserAddressForm(forms.ModelForm):
+    class Meta:
+        model = UserAddress
+        fields = ('address1', 'address2', 'city', 'state', 'zipcode')
+
+    def save(self, user, commit=True):
+        address = super(UserAddressForm, self).save(commit=False)
+        address.user = user
+        if commit:
+            address.save()
+        return address
