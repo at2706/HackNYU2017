@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% block title %}Doctor's Page{% endblock %}
+{% block content %}
+    <div class="main">
+        <div class="page-header">
+            <h3>Doctor's Portal</h3>
+        </div>
+        <h4>Are you a doctor? Log in here if so!</h4>
+        <a class="btn btn-default" href="#">Login</a></br>
+        Not registered? Sign up here! Make sure you have proper documentation ready.
+        <a class="btn btn-primary" href="#">Sign up</a>
+        <!-- links should go in the href and doctors should have their own portal, different
+            from patients -->
+    </div>
+{% endblock %}
