@@ -1,6 +1,7 @@
 import csv
+import random
 from django.db import transaction
-from .models import Hospital, HospitalAddress, Insurance
+from .models import Hospital, HospitalAddress, Insurance, Doctor
 
 
 def add():
@@ -24,3 +25,16 @@ def add2():
             types = row[17].split(',')
             if 'Health/Healthcare' in types:
                 Insurance.objects.create(name=row[1])
+
+
+def add3():
+    f = open('doctors.txt')
+    specialties = ['Gynecology', 'Pediatric Cardiology',
+                   'Cardiothoracic Radiology', 'Dermatology', 'Orthopaedic Surgery',
+                   'Neurotology', 'Rehabilitation', 'Cancer', 'Dentistry']
+    hospitals = Hospital.objects.all()
+    with transaction.atomic():
+        for line in f:
+            Doctor.objects.create(full_name=line,
+                                  specialty=random.choice(specialties),
+                                  hospital=random.choice(hospitals))
