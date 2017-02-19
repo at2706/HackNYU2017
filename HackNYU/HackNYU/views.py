@@ -94,7 +94,8 @@ class RegisterView(View):
 
         return render(request, 'register.html',
                       {'register': userForm,
-                       'patient': patientForm})
+                       'patient': patientForm,
+                       'address': addressForm})
 
 
 class DoctorView(View):
