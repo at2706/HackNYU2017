@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseRedirect
@@ -16,11 +17,8 @@ class IndexView(LoginRequiredMixin, View):
     redirect_field_name = 'next'
 
     def get(self, request):
-        if not request.user.is_authenticated:
-        #if request.user is None:
-            return HttpResponseRedirect("/login")
-        print "user is_authenticated"
-        recent = models.LabReport.objects.filter(patient=request.user.patient).order_by("-date")[:5]
+        recent = models.LabReport.objects.filter(
+            patient=request.user.patient).order_by("-date")[:5]
         return render(request, 'index.html', {'recent': recent})
 
     def post(self, request):
@@ -30,7 +28,9 @@ class IndexView(LoginRequiredMixin, View):
         return HttpResponse()
 
 
-class LabReportDetail(DetailView):
+class LabReportDetail(LoginRequiredMixin, DetailView):
+    login_url = '/login/'
+    redirect_field_name = 'next'
     model = models.LabReport
     template_name = "detail.html"
 
@@ -38,6 +38,17 @@ class LabReportDetail(DetailView):
         if not request.user.is_authenticated:
             return HttpResponseRedirect("/login")
         return super(LabReportDetail, self).get(request, pk)
+
+
+class HistoryView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
+    def get(self, request):
+        all_reports = models.LabReport.objects.filter(
+            patient=request.user.patient).order_by("-date")
+        return render(request, 'history.html',
+                      {'reports': all_reports})
 
 
 class RegisterView(View):
@@ -63,14 +74,6 @@ class RegisterView(View):
                        'patient': patientForm})
 
 
-class HistoryView(View):
-    def get(self, request):
-        if not request.user.is_authenticated:
-            return HttpResponseRedirect("/login")
-        all_reports = models.LabReport.objects.filter(patient=request.user.patient).order_by("-date")
-        return render(request, 'history.html',
-                      {'reports': all_reports})
-
 class DoctorView(View):
     def get(self, request):
         return render(request, 'history.html')
@@ -78,23 +81,24 @@ class DoctorView(View):
 
 class FaqView(View):
     def get(self, request):
-        return render(request, 'faq.html');
+        return render(request, 'faq.html')
+
 
 class HelpView(View):
     def get(self, request):
-        return render(request, 'help.html'); 
+        return render(request, 'help.html')
 
 
 class SecurityView(View):
     def get(self, request):
-        return render(request, 'Security.html');
+        return render(request, 'Security.html')
 
 
 class AboutView(View):
     def get(self, request):
-        return render(request, 'about.html');
+        return render(request, 'about.html')
 
 
-class  ContactView(View):
+class ContactView(View):
     def get(self, request):
-        return render(request, 'contact.html');
+        return render(request, 'contact.html')
