@@ -3,4 +3,5 @@ div.bordernfill{
 	border-width:1px;
 	border-radius: 25px;
 	background-color: #f2f4f9;
+	margin: 10px;
 }
