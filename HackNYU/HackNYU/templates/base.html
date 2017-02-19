@@ -23,12 +23,12 @@
                 <div class="col-sm-9">
                     <ul class="nav nav-tabs nav-justified">
                       <li role="presentation"><a href="{% url 'hacknyu:index' %}">Home</a></li>
-                      <li role="presentation"><a href="#">About</a></li>
-                      <li role="presentation"><a href="#">FAQ</a></li>
-                      <li role="presentation"><a href="#">Contact</a></li>
-                      <li role="presentation"><a href="#">For Doctors</a></li>
-                      <li role="presentation"><a href="#">Security</a></li>
-                      <li role="presentation"><a href="#">Help</a></li>
+                      <li role="presentation"><a href="{% url 'hacknyu:about' %}">About</a></li>
+                      <li role="presentation"><a href="{% url 'hacknyu:faq' %}">FAQ</a></li>
+                      <li role="presentation"><a href="{% url 'hacknyu:contact' %}">Contact</a></li>
+                      <li role="presentation"><a href="{% url 'hacknyu:doctor' %}">For Doctors</a></li>
+                      <li role="presentation"><a href="{% url 'hacknyu:security' %}">Security</a></li>
+                      <li role="presentation"><a href="{% url 'hacknyu:help' %}">Help</a></li>
                     </ul>
                     {% bootstrap_messages %}
                     {% block content %}

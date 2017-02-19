@@ -4,17 +4,22 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 from django.views.generic.detail import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from . import forms
 from . import models
 
 # Create your views here.
 
 
-class IndexView(View):
+class IndexView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
 
     def get(self, request):
         if not request.user.is_authenticated:
+        #if request.user is None:
             return HttpResponseRedirect("/login")
+        print "user is_authenticated"
         recent = models.LabReport.objects.filter(patient=request.user.patient).order_by("-date")[:5]
         return render(request, 'index.html', {'recent': recent})
 
@@ -65,3 +70,31 @@ class HistoryView(View):
         all_reports = models.LabReport.objects.filter(patient=request.user.patient).order_by("-date")
         return render(request, 'history.html',
                       {'reports': all_reports})
+
+class DoctorView(View):
+    def get(self, request):
+        return render(request, 'history.html')
+
+
+class FaqView(View):
+    def get(self, request):
+        return render(request, 'faq.html');
+
+class HelpView(View):
+    def get(self, request):
+        return render(request, 'help.html'); 
+
+
+class SecurityView(View):
+    def get(self, request):
+        return render(request, 'Security.html');
+
+
+class AboutView(View):
+    def get(self, request):
+        return render(request, 'about.html');
+
+
+class  ContactView(View):
+    def get(self, request):
+        return render(request, 'contact.html');
