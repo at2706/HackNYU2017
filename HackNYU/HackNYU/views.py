@@ -23,6 +23,9 @@ class IndexView(LoginRequiredMixin, View):
     def post(self, request):
         if request.is_ajax():
             print("Hello!")
+            lat = request.POST.get('lat')
+            lng = request.POST.get('lng')
+            print((lat, lng))
 
         return HttpResponse()
 

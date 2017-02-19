@@ -57,9 +57,12 @@ class Address(models.Model):
 
     def save(self, *args, **kwargs):
         geolocator = Nominatim()
-        location = geolocator.geocode(str(self))
-        self.lat = location.latitude
-        self.lng = location.longitude
+        try:
+            location = geolocator.geocode(str(self))
+            self.lat = location.latitude
+            self.lng = location.longitude
+        except Exception:
+            pass
         super(Address, self).save(*args, **kwargs)
 
 
