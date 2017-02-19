@@ -32,7 +32,7 @@ class Patient(models.Model):
         return str(self.user)
 
     def age(self):
-        return int(date.today() - self.date_of_birth) / 365
+        return int((date.today() - self.date_of_birth).total_seconds() / (365*24*60*60))
 
 
 class Address(models.Model):
