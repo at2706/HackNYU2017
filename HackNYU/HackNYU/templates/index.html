@@ -9,7 +9,7 @@
 <div class="page-header">
 	<h3>Hello {{ request.user.first_name }}  {{ request.user.last_name }}!</h3>
 </div>
-<div class="row">
+<div class="row col-md-9">
 	Here are your five most recent lab reports:
 	{% for labreport in recent %}
 		<div class="container-fluid">
@@ -34,6 +34,11 @@
 		</div>
 	{% endfor %}
 	<a class="btn btn-primary" href="{% url 'hacknyu:history' %}">See all</a>
+</div>
+
+<div class=".col-md-3">
+	<div class="btn btn-primary" id="nearby" style="vertical-align: middle;"><i class="material-icons">location_on</i>Nearby</div>
+	<div id="nearby_display"></div>
 </div>
 
 {% endif %}

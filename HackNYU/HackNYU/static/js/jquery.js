@@ -26,33 +26,46 @@ $(document).ready(function(){
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
     });
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-            };
 
-            $.ajax({
-                url : "/", // the endpoint
-                type : "POST", // http method
-                data : pos, // data sent with the post request
+    $('#nearby').click(function(e) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+                };
 
-                // handle a successful response
-                success : function(json) {
-                    $('#post-text').val(''); // remove the value from the input
-                    console.log(json); // log the returned json to the console
-                    console.log("success"); // another sanity check
-                },
+                $.ajax({
+                    url : "/", // the endpoint
+                    type : "POST", // http method
+                    data : pos, // data sent with the post request
 
-                // handle a non-successful response
-                error : function(xhr,errmsg,err) {
-                    
-                }
+                    // handle a successful response
+                    success : function(json) {
+                        $('#post-text').val(''); // remove the value from the input
+                        console.log(json); // log the returned json to the console
+                        console.log("success"); // another sanity check
+                        display = document.getElementById("nearby_display");
+                        while (display.firstChild) {
+                            display.removeChild(display.firstChild);
+                        }
+
+                        for(var i=0; i < json['data'].length; i++) {
+                            var hospital = json['data'][i];
+                            console.log(hospital);
+                            var card = document.createElement("div");
+                            card.textContent = hospital.name + hospital.phone_number + hospital.address + hospital.distance;
+
+                            display.appendChild(card);
+                        }
+                    },
+
+                    // handle a non-successful response
+                    error : function(xhr,errmsg,err) {
+                        
+                    }
+                });
             });
-        });
-    }
-
-
-    
+        }    
+    });
 });

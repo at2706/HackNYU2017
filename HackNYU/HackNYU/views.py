@@ -1,3 +1,4 @@
+from django.core import serializers
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db import transaction
@@ -33,10 +34,17 @@ class IndexView(LoginRequiredMixin, View):
             nearby = []
             for hospital in models.HospitalAddress.objects.all():
                 loc = (hospital.lat, hospital.lng)
-                nearby.append((hospital, vincenty(pos, loc).miles))
+                nearby.append((hospital.hospital, vincenty(pos, loc).miles))
 
             nearby.sort(key=operator.itemgetter(1))
-            return JsonResponse(nearby[:10])
+            nearby = nearby[:10]
+            nearby = [{'name': str(h),
+                       'phone_number': h.phone_number,
+                       'insurance': h.insurance,
+                       'address': str(h.address),
+                       'distance': "{:.2f}".format(d)}
+                      for h, d in nearby]
+            return JsonResponse({'data': nearby})
 
         return HttpResponse()
 
@@ -91,7 +99,7 @@ class RegisterView(View):
 
 class DoctorView(View):
     def get(self, request):
-        return render(request, 'doctor.html')
+        return render(request, 'history.html')
 
 
 class FaqView(View):
