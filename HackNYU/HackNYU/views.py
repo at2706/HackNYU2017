@@ -100,7 +100,7 @@ class RegisterView(View):
 
 class DoctorView(View):
     def get(self, request):
-        return render(request, 'history.html')
+        return render(request, 'doctor.html')
 
 
 class FaqView(View):

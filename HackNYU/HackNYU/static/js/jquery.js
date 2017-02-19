@@ -53,9 +53,23 @@ $(document).ready(function(){
                         for(var i=0; i < json['data'].length; i++) {
                             var hospital = json['data'][i];
                             console.log(hospital);
-                            var card = document.createElement("div");
-                            card.textContent = hospital.name + hospital.phone_number + hospital.address + hospital.distance;
-
+                            var card = document.createElement("tr");
+                            var tdata = document.createElement("td");
+                            //card.textContent = hospital.name + hospital.phone_number + hospital.address + hospital.distance;
+                            card.appendChild(tdata);
+                            tdata.textContent = hospital.name;
+                            var tdata = document.createElement("td");
+                            card.appendChild(tdata);
+                            tdata.textContent = hospital.phone_number;
+                            var tdata = document.createElement("td");
+                            card.appendChild(tdata);
+                            tdata.textContent = hospital.address;
+                            var tdata = document.createElement("td");
+                            card.appendChild(tdata);
+                            tdata.textContent = hospital.distance;
+                            var tdata = document.createElement("td");
+                            card.appendChild(tdata);
+                            
                             display.appendChild(card);
                         }
                     },
