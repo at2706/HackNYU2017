@@ -14,7 +14,7 @@
 	{% for labreport in recent %}
 		<div class="container-fluid">
 			<div class="bordernfill">
-				<table class="table" style="border-radius: 25px;">
+				<table class="table">
 					<tr>
 						<td><b>Full Name:</b> {{ labreport.user.first_name }}  {{ labreport.user.last_name }}</td>
 						<td><b>Age:</b> {{ request.user.patient.age }}</td>

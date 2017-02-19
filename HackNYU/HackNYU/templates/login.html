@@ -8,7 +8,8 @@
         {% csrf_token %}
         {% bootstrap_form form %}
         {% block button %}
-            {% buttons submit='Submit' %}{% endbuttons %}
+            {% buttons submit='Submit' %}{% endbuttons %} 
         {% endblock %}
     </form>
+	<a class="btn btn-primary" href="{% url 'hacknyu:register' %}">Register</a>
 {% endblock %}
