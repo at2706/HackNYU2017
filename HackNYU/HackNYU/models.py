@@ -74,7 +74,7 @@ class UserAddress(Address):
 
 
 class Hospital(models.Model):
-    name = models.CharField(verbose_name='Name', max_length=50)
+    name = models.CharField(verbose_name='Name', max_length=100)
     phone_number = models.IntegerField()
     insurance = models.OneToOneField(
         Insurance, related_name='hospital', null=True, on_delete=models.SET_NULL)
@@ -117,7 +117,7 @@ class MedicalRecord(models.Model):
 
 class LabReport(models.Model):
     patient = models.ForeignKey(Patient, related_name='lab', null=True, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=date.today)
     illness = models.CharField(verbose_name='Illness', max_length=500)
     treatment = models.CharField(verbose_name='Treatment', max_length=500)
     weight = models.IntegerField()
